@@ -48,10 +48,24 @@ async function run() {
     // });
 
 
-    
+
     // Select Classes
 
-    app.post('/carts', async (req, res) => {
+
+    app.get('/class',  async (req, res) => {
+      const email = req.query.email;
+
+      if (!email) {
+        res.send([]);
+      }
+      const query = { email: email };
+      const result = await selectClassCollection.find(query).toArray();
+      res.send(result);
+    });
+
+
+
+    app.post('/class', async (req, res) => {
       const item = req.body;
       const result = await selectClassCollection.insertOne(item);
       res.send(result);
