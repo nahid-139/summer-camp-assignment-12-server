@@ -27,6 +27,8 @@ async function run() {
   try {
    client.connect();
     const dataCollection = client.db("SummerCampDB").collection("allData");
+    const usersCollection = client.db("SummerCampDB").collection("users");
+    const selectClassCollection = client.db("SummerCampDB").collection("selectClass");
 
 
 
@@ -35,6 +37,25 @@ async function run() {
       const result = await toy.toArray();
       res.send(result);
     });
+
+    // users
+
+    // app.post("/users", async (req, res) => {
+    //   const user = req.body;
+    //   console.log(user);
+    //   const result = await usersCollection.insertOne(user);
+    //   res.send(result);
+    // });
+
+
+    
+    // Select Classes
+
+    app.post('/carts', async (req, res) => {
+      const item = req.body;
+      const result = await selectClassCollection.insertOne(item);
+      res.send(result);
+    })
 
     
   } finally {
