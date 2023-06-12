@@ -125,6 +125,16 @@ app.delete("/users/:id", async (req, res) => {
       const cursor= await addClassCollection.insertOne(items)
       res.send(cursor)
     });
+
+
+    app.get("/insclass/", async (req, res) => {
+      let query ={};
+      if(req.query?.email){
+        query ={email :req.query?.email}
+      }
+      const result =await addClassCollection.find(query).toArray();
+      res.send(result);
+    });
     
   } finally {
     // Ensures that the client will close when you finish/error
