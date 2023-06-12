@@ -29,6 +29,7 @@ async function run() {
     const dataCollection = client.db("SummerCampDB").collection("allData");
     const usersCollection = client.db("SummerCampDB").collection("users");
     const selectClassCollection = client.db("SummerCampDB").collection("selectClass");
+    const addClassCollection = client.db("SummerCampDB").collection("addClass");
 
 
 
@@ -56,6 +57,32 @@ async function run() {
       res.send(result);
     });
 
+// admin role
+app.patch("/users/admin/:id", async (req, res) => {
+  const id = req.params.id;
+  const filter = { _id: ObjectId(id) };
+  const options = { upsert: true };
+  const updatedDoc = {
+    $set: {
+      role: "admin",
+    },
+  };
+  const result = await usersCollection.updateOne(
+    filter,
+    updatedDoc,
+    options
+  );
+  res.send(result);
+});
+
+ 
+
+app.delete("/users/:id", async (req, res) => {
+  const id = req.params.id;
+  const query = { _id: ObjectId(id) };
+  const result = await usersCollection.deleteOne(query);
+  res.send(result);
+});
 
 
     //  My Classes
@@ -85,6 +112,19 @@ async function run() {
       res.send(result);
     })
 
+// Instractor class 
+    app.get("/addclass", async (req, res) => {
+      const toy= addClassCollection.find();
+      const result = await toy.toArray();
+      res.send(result);
+    });
+  
+  
+    app.post("/addclass", async(req, res) => {
+      const items = req.body;
+      const cursor= await addClassCollection.insertOne(items)
+      res.send(cursor)
+    });
     
   } finally {
     // Ensures that the client will close when you finish/error
