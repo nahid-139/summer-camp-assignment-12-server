@@ -32,7 +32,6 @@ async function run() {
     const addClassCollection = client.db("SummerCampDB").collection("addClass");
 
 
-
     app.get("/allData", async (req, res) => {
       const toy= dataCollection.find();
       const result = await toy.toArray();
